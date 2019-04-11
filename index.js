@@ -1,3 +1,3 @@
-module.exports = () => {
+exports.analyze = function() {
   console.log("Hola mundo");
-};
+}
