@@ -5,5 +5,23 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "jest": "^24.7.1"
-  }
+  },
+  "description": "Proyecto 5to de Laboratoria",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnaFR/GDL002-md-links.git"
+  },
+  "author": "Ana Laura Flores",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnaFR/GDL002-md-links/issues"
+  },
+  "homepage": "https://github.com/AnaFR/GDL002-md-links#readme"
 }

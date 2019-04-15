@@ -1,4 +1,4 @@
-const mdLinks = require('../');
+const mdLinks = require('../index');
 
 
 describe('mdLinks', () => {
@@ -8,3 +8,10 @@ describe('mdLinks', () => {
   });
 
 });
+
+
+
+test('mdLinks es un objeto', () => {
+  expect(typeof mdLinks).toBe('object');
+});
+
