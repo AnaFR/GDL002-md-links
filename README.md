@@ -10,7 +10,8 @@ README.md con descripción del módulo, instrucciones de instalación/uso, docum
 
 
 ## Diagrama de flujo
-[Diagrama de flujo](https://github.com/AnaFR/GDL002-md-links/blob/master/img/flujograma.png)
+
+(https://github.com/AnaFR/GDL002-md-links/blob/master/img/flujograma.png)
 
 
 [Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado
