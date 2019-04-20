@@ -1,12 +1,12 @@
 
-// exports.analyze = function() {
-//   console.log("Hola ana");
-// }
-// console.log("Hola ana");
-
 // Importar modulo File System (fs)
-const fs = require('fs');
 
+const fs = require('fs');
+// const path = require ('./path');
+// const parse = require ('./parse');
+
+
+// Modulo para leer archivos 
 module.exports = (filePath, options) => {
  return new Promise((resolve, reject)=> {
    // Leer el archivo
@@ -20,57 +20,112 @@ module.exports = (filePath, options) => {
 };
 
 
- 
-// var txt = `
-// # Markdown Links
 
-// ## Preámbulo
+// module.exports = {
 
-// [Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado
-// ligero muy popular entre developers. Es usado en muchísimas plataformas que
-// manejan texto plano (GitHub, foros, blogs, ...), y es muy común
-// encontrar varios archivos en ese formato en cualquier tipo de repositorio
-// (empezando por el tradicional README.md).
+//  //Verificar si hay un path
+//   isThereApath: function (filePath) {
+//     if (filePath == undefined) {
+//       console.log("Insert a path");
+//       return false
+//     }
+//     else
+//       return true
+//     }
+//   },
 
-// Estos archivos Markdown normalmente contienen _links_ (vínculos/ligas) que
-// muchas veces están rotos o ya no son válidos y eso perjudica mucho el valor de
-// la información que se quiere compartir.
+//   // Función para saber si la ruta existe o no 
+//   pathWorking: function (pathFile) {
+//     if (fs.existsSync(pathFile)) {
+//       console.log("true");
+//       return true
+//     }
+//     else {
+//       console.log("false");
+//       return false
+//     }
+//   },
 
-// Dentro de una comunidad de código abierto, nos han propuesto crear una
-// herramienta usando [Node.js](https://nodejs.org/), que lea y analice archivos
-// en formato Markdown, para verificar los links que contengan y reportar
-// algunas estadísticas.
+//   // function to verificated that path is absolute
+//   // pathIsAbsolute : function (pathfile){
+//   //   if(path.isAbsolute(pathfile)){
+//   //     return true;
+//   //   }
+//   //   else{
+//   //     return false
+//   //   }
+//   // },
 
-// ![md-links](https://user-images.githubusercontent.com/110297/42118443-b7a5f1f0-7bc8-11e8-96ad-9cc5593715a6.jpg)
+//   //Función para verificar si la ruta es un directorio
 
-// ## Introducción
+//   pathDirectory: function (pathFile) {
+//     if (fs.statSync(pathFile).isDirectory()) {
+//       return true
+//     } else {
+//       return false
+//     }
+//   },
 
-// [Node.js](https://nodejs.org/es/) es un entorno de ejecución para JavaScript
-// construido con el [motor de JavaScript V8 de Chrome](https://developers.google.com/v8/).
-// Esto nos va a permitir ejecutar JavaScript en el entorno del sistema operativo,
-// ya sea tu máquina o un servidor, lo cual nos abre las puertas para poder
-// interactuar con el sistema en sí, archivos, redes, ...
-// `;
-// function urlify(txt) {
-//   // console.log(txt);
-//   const mdLinkRgEx = /\[.+?\]\(.+?\)/g;
-//   const mdLinkRgEx2 = /\[(.+?)\]\((.+?)\)/;
 
-//   let allLinks = txt.match(mdLinkRgEx);
-// // console.log(allLinks);
-//   var htmlLinks = [];
-//   for (var x in allLinks) {
-//     var grpdDta = mdLinkRgEx2.exec(allLinks[x]);
-//   // console.log(grpdDta);
-//     var linkified = "<a href=\"" + grpdDta[2] + "\">" + grpdDta[1] + "<a>";
-//     // console.log("##################### " + linkified);
-//     htmlLinks.push(linkified);   
-//   }
-//   return htmlLinks;
+
+//   //Funcion que checa si es un .md
+//   pathMd: function (pathFile) {
+//     if (path.extname(pathFile) === ".md") {
+//       return true
+//     }
+//     else {
+//       return false
+//     }
+//   },
+
+
+//   //Funcion para verificar si el campo está vacío o lleno
+//   pathInserted: function (pathFile) {
+//     if (pathFile == undefined) {
+//       console.log("false");
+//       return false
+//     }
+//     else {
+//       return true
+//     }
+//   },
+
+//   // Función para saber si la ruta existe o no 
+
+//   pathWorking: function (pathFile) {
+//     if (fs.existsSync(pathFile)) {
+//       console.log("true");
+//       return true
+//     } else {
+//       console.log("false");
+//       return false
+//     }
+//   },
+
+//   //Función para verificar si la ruta es un directorio
+
+//   pathDirectory: function (pathFile) {
+//     if (fs.statSync(pathFile).isDirectory()) {
+//       return true
+//     } else {
+//       return false
+//     }
+//   },
+
+//   //Funcion que checa si es un .md
+//   pathMd: function (pathFile) {
+//     if (path.extname(pathFile) === ".md") {
+//       return true
+//     } else {
+//       return false
+//     }
+//   },
+
+//   readingFile: function (pathFile) {
+//     let archivo = fs.readFileSync(pathFile, 'utf-8');
+//     console.log(archivo);
+//     return true;
+//   },
+
 // };
-
-// console.log("resultado =");
-// urlify(txt).forEach(link => console.log(link));
-
-
 
