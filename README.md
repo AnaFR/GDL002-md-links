@@ -1,12 +1,17 @@
+# Markdown Links
+
+
 Instrucciones de instalación
 
 
 
 README.md con descripción del módulo, instrucciones de instalación/uso, documentación del API y ejemplos. Todo lo relevante para que cualquier developer que quiera usar tu librería pueda hacerlo sin inconvenientes.
 
-# Markdown Links
 
-## Preámbulo
+
+## Diagrama de flujo
+[Diagrama de flujo](https://github.com/AnaFR/GDL002-md-links/blob/master/img/flujograma.png)
+
 
 [Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado
 ligero muy popular entre developers. Es usado en muchísimas plataformas que
