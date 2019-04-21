@@ -17,7 +17,7 @@ module.exports = (filePath, options) => {
      resolve(data.toString());
    });
  });
-};
+}; 
 
 
 
