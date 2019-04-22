@@ -16,7 +16,7 @@ describe('mdLinks', () => {
 
 
 
-const {validatePath, absolutePath, readingFile} = require('../md-links.js');
+const {validatePath, absolutePath, readingFile} = require('../src/mdLinks.js/index.js.js.js.js');
 
 test('should be a markdown file', () =>{
   expect(validatePath("README.md")).toBe(true);
