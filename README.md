@@ -1,40 +1,40 @@
 # Markdown Links
 
 
-Instrucciones de instalación
+## Diagrama de flujo del modulo
 
-
-
-README.md con descripción del módulo, instrucciones de instalación/uso, documentación del API y ejemplos. Todo lo relevante para que cualquier developer que quiera usar tu librería pueda hacerlo sin inconvenientes.
-
-
-
-## Diagrama de flujo
 ![Diagrama de flujo](https://github.com/AnaFR/GDL002-md-links/blob/master/img/flujograma.png)
 
+## ¿QUÉ ES?
+Es un modulo con las siguientes funcionalidades:
 
-[Markdown](https://es.wikipedia.org/wiki/Markdown) es un lenguaje de marcado
-ligero muy popular entre developers. Es usado en muchísimas plataformas que
-manejan texto plano (GitHub, foros, blogs, ...), y es muy común
-encontrar varios archivos en ese formato en cualquier tipo de repositorio
-(empezando por el tradicional README.md).
+    Lee  archivos exclusivamente con extensión .md
 
-Estos archivos Markdown normalmente contienen _links_ (vínculos/ligas) que
-muchas veces están rotos o ya no son válidos y eso perjudica mucho el valor de
-la información que se quiere compartir.
+    Extrae e imprime todos los links que contenga el archivo
 
-Dentro de una comunidad de código abierto, nos han propuesto crear una
-herramienta usando [Node.js](https://nodejs.org/), que lea y analice archivos
-en formato Markdown, para verificar los links que contengan y reportar
-algunas estadísticas.
+    Seleccionando la opción --validate valida estado actual de los links encontrados (  verifica que e se encuentren funcionando, es decir, que no esten rotos.)
+    
+    Seleccionando la opción --stats la salida será un texto con estadísticas básicas sobre los links.
 
-![md-links](https://user-images.githubusercontent.com/110297/42118443-b7a5f1f0-7bc8-11e8-96ad-9cc5593715a6.jpg)
 
-## Introducción
 
-[Node.js](https://nodejs.org/es/) es un entorno de ejecución para JavaScript
-construido con el [motor de JavaScript V8 de Chrome](https://developers.google.com/v8/).
-Esto nos va a permitir ejecutar JavaScript en el entorno del sistema operativo,
-ya sea tu máquina o un servidor, lo cual nos abre las puertas para poder
-interactuar con el sistema en sí, archivos, redes, ...
-`;
+
+ 
+
+##¿CÓMO INSTALAR EL MÓDULO?
+
+Requisitos : Debes tener instalado Node.js en tu computadora.
+
+1. Abrir la terminal desde la carpeta del proyecto o abrir carpeta del proyecto desde la terminal.
+
+Formas de instalación: 
+
+# Local
+
+npm install --save 
+
+# Global
+
+npm install --save 
+
+uso, documentación del API y ejemplos

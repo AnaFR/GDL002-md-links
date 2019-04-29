@@ -2,32 +2,66 @@ const mdLinks = require ('./index');
 const filePath = process.argv[2];
 const path = require ('path');
 const resultReadFile = mdLinks(filePath, null);
-let htmlLinks = [];
+//  let htmlLinks = [];
+//  let prueba = urlify(data);
+// const fetch = require('node-fetch');
+
+///function to verificated that it´s an .md file
+function validateMd(filePath) {
+  console.log(filePath)
+  if (filePath === undefined) {
+    return console.log('Enter a directory');
+  } else {
+    const pathExtencion = path.extname(filePath);
+    console.log (pathExtencion);
+    if (pathExtencion != '.md') {
+      console.log('It´s not an .md file');
+      return false;
+    } else {
+      console.log('It´s an .md file');
+      return true;
+    }
+  }
+}
+
+validateMd(filePath);
 
 
-// resultado de leer archivo
+//function to verificated that path is absolute
+function pathIsAbsolute (filePath){
+  if(path.isAbsolute(filePath)){
+    console.log('path is absolute');
+    return true;
+  }
+  else{
+    console.log('path is not absolute');
+    return false
+  }
+};
+
+pathIsAbsolute (filePath);
+
+
+
+
+// result of reading file
 resultReadFile.then(
    (data)=> { // On Success
-    console.log("Links encontrados:");
-    urlify(data).forEach(link => console.log(link +" " + filePath));  
+    console.log("Found links:");
+    urlify(data);
    },
    (err)=> { // On Error
        console.error(err);
    }
+  
 );
 
-
-
-
-
-
-
-//Función que extre los links
+//Función que extre los links y los imprime en arreglo de objetos
 function urlify(data) {
     const mdLinkRgEx = /\[(.+?)\]\(.+?\)/g;
     const mdLinkRgEx2 = /\[(.+?)\]\((.+?)\)/;
     let allLinks = data.match(mdLinkRgEx);
-    // var htmlLinks = [];
+    let htmlLinks = [];
     for (var x in allLinks) {
       var grpdDta = mdLinkRgEx2.exec(allLinks[x]);
       var grupoData = {
@@ -37,68 +71,34 @@ function urlify(data) {
       }; 
       htmlLinks.push(grupoData);   
     }
+    console.log(htmlLinks.length);
     console.log(htmlLinks);
+    return (htmlLinks);
+   
   };
  
-  
-//función para sumar los linksjk
-  function sumatotal(htmlLinks){
-  const total = 0;
-  for ( i = 0; i < htmlLinks.length; i++ ) {
-    total += htmlLinks[ i ];
-  };
-  console.log( "El total de los elementos del arreglo es", total );
-  return (total);
-};
 
-sumatotal(htmlLinks);
-// function sumaLinks() {
-  
-// for(var i = 0 ; i < htmlLinks.length; i++);{
-//   console.log (htmlLinks[i]);
 
-// }
+
+ 
+
+
+
+
+  
+
+
+
+
+  
+// // //function to add the links
+//   function sumatotal(prueba){
+//   const total = (prueba.length);
+//   console.log( " Total found links", total );
+//   return (total);
 // };
-// sumaLinks();
 
-
-
-
-
-//Validar que sea un archivo '.md'
-function validateMd(filePath) {
-  console.log(filePath)
-  if (filePath === undefined) {
-    return console.log('Introduce un directorio');
-  } else {
-    const pathExtencion = path.extname(filePath);
-    console.log (pathExtencion);
-    if (pathExtencion != '.md') {
-      console.log('Incorrecto, no es  archivo .md');
-      return false;
-    } else {
-      console.log('Es un archivo md');
-      return true;
-    }
-  }
-}
-
-validateMd(filePath);
-
-
- //function to verificated that path is absolute
- function pathIsAbsolute (filePath){
-    if(path.isAbsolute(filePath)){
-      console.log('path is absolute');
-      return true;
-    }
-    else{
-      console.log('path is not absolute');
-      return false
-    }
-};
-
-pathIsAbsolute (filePath);
+// sumatotal();
 
 
 
@@ -107,7 +107,36 @@ pathIsAbsolute (filePath);
 module.exports = {
   validateMd,
   pathIsAbsolute,
+  // sumatotal,
   
 }
 
 
+// function extractLinks(newPath) {
+//   let returnUrl;
+//   returnUrl = fs.readFile(newPath, 'utf-8', (err, data) => {
+//          if (err) {
+//            reject(err);
+//          }
+//          {
+//         const toString= data.toString();
+//         const mdLinkRgEx = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
+//         const mdLinkRgEx2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
+  
+//         const allLinks = toString.match(mdLinkRgEx);
+//         const urlArray = toString.match(mdLinkRgEx2);
+  
+//         for (let i=0; i< urlArray.length; i++) {
+//           fetch(urlArray[i])
+//           .then(response => {
+//             if (response.status == 200) {
+//               console.log(`Text: ${allLinks[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
+//             } else if (response.status == 404||response.status == 400) {
+//               console.log(`ERROR.\nText: ${allLink[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
+//             }
+//           })
+//         }
+//       }
+//    })
+//      return returnUrl;
+// };
