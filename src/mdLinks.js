@@ -1,52 +1,80 @@
-
-const mdLinks = require('./index');
-
+const mdLinks = require ('./index');
 const filePath = process.argv[2];
 const path = require ('path');
+const resultReadFile = mdLinks(filePath, null);
+let htmlLinks = [];
 
 
- const resultReadFile = mdLinks(filePath, null);
-
+// resultado de leer archivo
 resultReadFile.then(
    (data)=> { // On Success
-    console.log("Links encontrados =");
-    urlify(data).forEach(link => console.log(link));
-       
+    console.log("Links encontrados:");
+    urlify(data).forEach(link => console.log(link +" " + filePath));  
    },
    (err)=> { // On Error
        console.error(err);
    }
 );
 
+
+
+
+
+
+
 //Función que extre los links
 function urlify(data) {
-    // console.log(txt);
     const mdLinkRgEx = /\[(.+?)\]\(.+?\)/g;
     const mdLinkRgEx2 = /\[(.+?)\]\((.+?)\)/;
-  
     let allLinks = data.match(mdLinkRgEx);
-    var htmlLinks = [];
+    // var htmlLinks = [];
     for (var x in allLinks) {
       var grpdDta = mdLinkRgEx2.exec(allLinks[x]);
-    var linkified = "<a href=\"" + grpdDta[2] + "\">" +"text=\"" + grpdDta[1] + "<a>";
-      htmlLinks.push(linkified);   
+      var grupoData = {
+        href: grpdDta[2],
+        text: grpdDta[1],
+        file: filePath
+      }; 
+      htmlLinks.push(grupoData);   
     }
     console.log(htmlLinks);
-    return htmlLinks;
   };
+ 
   
+//función para sumar los linksjk
+  function sumatotal(htmlLinks){
+  const total = 0;
+  for ( i = 0; i < htmlLinks.length; i++ ) {
+    total += htmlLinks[ i ];
+  };
+  console.log( "El total de los elementos del arreglo es", total );
+  return (total);
+};
+
+sumatotal(htmlLinks);
+// function sumaLinks() {
+  
+// for(var i = 0 ; i < htmlLinks.length; i++);{
+//   console.log (htmlLinks[i]);
+
+// }
+// };
+// sumaLinks();
+
 
 
 
 
 //Validar que sea un archivo '.md'
 function validateMd(filePath) {
+  console.log(filePath)
   if (filePath === undefined) {
     return console.log('Introduce un directorio');
   } else {
     const pathExtencion = path.extname(filePath);
+    console.log (pathExtencion);
     if (pathExtencion != '.md') {
-      console.log('No es un archivo .md');
+      console.log('Incorrecto, no es  archivo .md');
       return false;
     } else {
       console.log('Es un archivo md');
@@ -73,21 +101,6 @@ validateMd(filePath);
 pathIsAbsolute (filePath);
 
 
-// //función para contar los links 
-// export const totalLinks = (array) => {
-//   const total = array.length;
-//   return total;
-// };
-
-// export const uniqueLinks = (array) => {
-//   const unique = [...new Set(array.map((link) => link.href))];
-//   return unique.length;
-// };
-
-// export const brokenLinks = (array) => {
-//   const broken = array.filter(link => link.status === '' || link.statusText === 'Fail');
-//   return broken.length;
-// };
 
 
 

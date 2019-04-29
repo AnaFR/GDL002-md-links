@@ -2,10 +2,6 @@ const mdLinks = require('../index');
 
 
 
-
-
-
-
 describe('mdLinks', () => {
 
   it('should...', () => {
