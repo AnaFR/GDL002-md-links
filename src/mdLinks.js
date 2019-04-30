@@ -1,10 +1,11 @@
-const mdLinks = require ('./index');
+// const mdLinks = require ('./index');
 const filePath = process.argv[2];
 const path = require ('path');
-const resultReadFile = mdLinks(filePath, null);
+const fs = require('fs');
+// const resultReadFile = mdLinks(filePath, null);
 //  let htmlLinks = [];
 //  let prueba = urlify(data);
-// const fetch = require('node-fetch');
+const fetch = require('node-fetch');
 
 ///function to verificated that it´s an .md file
 function validateMd(filePath) {
@@ -27,70 +28,58 @@ function validateMd(filePath) {
 validateMd(filePath);
 
 
-//function to verificated that path is absolute
-function pathIsAbsolute (filePath){
-  if(path.isAbsolute(filePath)){
-    console.log('path is absolute');
-    return true;
-  }
-  else{
-    console.log('path is not absolute');
-    return false
-  }
-};
+// //function to verificated that path is absolute
+// function pathIsAbsolute (filePath){
+//   if(path.isAbsolute(filePath)){
+//     console.log('path is absolute');
+//     return true;
+//   }
+//   else{
+//     console.log('path is not absolute');
+//     return false
+//   }
+// };
 
-pathIsAbsolute (filePath);
+// pathIsAbsolute (filePath);
 
 
 
 
 // result of reading file
-resultReadFile.then(
-   (data)=> { // On Success
-    console.log("Found links:");
-    urlify(data);
-   },
-   (err)=> { // On Error
-       console.error(err);
-   }
+// resultReadFile.then(
+//    (data)=> { // On Success
+//     console.log("Found links:");
+//     urlify(filePath);
+//    },
+//    (err)=> { // On Error
+//        console.error(err);
+//    }
   
-);
+// );
 
-//Función que extre los links y los imprime en arreglo de objetos
-function urlify(data) {
-    const mdLinkRgEx = /\[(.+?)\]\(.+?\)/g;
-    const mdLinkRgEx2 = /\[(.+?)\]\((.+?)\)/;
-    let allLinks = data.match(mdLinkRgEx);
-    let htmlLinks = [];
-    for (var x in allLinks) {
-      var grpdDta = mdLinkRgEx2.exec(allLinks[x]);
-      var grupoData = {
-        href: grpdDta[2],
-        text: grpdDta[1],
-        file: filePath
-      }; 
-      htmlLinks.push(grupoData);   
-    }
-    console.log(htmlLinks.length);
-    console.log(htmlLinks);
-    return (htmlLinks);
+// //function that extracts the links 
+// function urlify(data) {
+//     const mdLinkRgEx = /\[(.+?)\]\((.+?\))/g;
+//     const mdLinkRgEx2 = /\[(.+?)\]\((.+?)\)/;
+//     let allLinks = data.match(mdLinkRgEx);
+//     let htmlLinks = [];
+//     for (var x in allLinks) {
+//       var grpdDta = mdLinkRgEx2.exec(allLinks[x]);
+//       var grupoData = {
+//         href: grpdDta[2],
+//         text: grpdDta[1],
+//         file: filePath
+//       }; 
+//       htmlLinks.push(grupoData);   
+//     }
+//     console.log(htmlLinks.length);
+//     console.log(htmlLinks);
+//     return (htmlLinks);
    
-  };
+//   };
  
 
 
-
- 
-
-
-
-
-  
-
-
-
-
-  
 // // //function to add the links
 //   function sumatotal(prueba){
 //   const total = (prueba.length);
@@ -101,42 +90,55 @@ function urlify(data) {
 // sumatotal();
 
 
+function urlifyll(newPath) {
+
+  console.log(newPath + " nombre archivo");
+  
+  fs.readFile(newPath,"utf-8",  (err, data) => {
+         if (err) {
+          reject(err);
+         }
+         {
+           console.log('entro');
+           
+        const toString= data.toString();
+        const mdLinkRgEx = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
+        const mdLinkRgEx2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
+  
+        const allLinks = toString.match(mdLinkRgEx);
+        const urlArray = toString.match(mdLinkRgEx2);
+  
+        for (let i=0; i< urlArray.length; i++) {
+          fetch(urlArray[i])
+          .then(response => {
+            if (response.status == 200) {
+              console.log(`Text: ${allLinks[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
+            } else if (response.status == 404||response.status == 400) {
+              console.log(`ERROR.\nText: ${allLink[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
+            }
+          })
+        }
+      }
+   })
+    //  return returnUrl;
+};
+
+
+
+
+
+
+
+
 
 
 
 module.exports = {
   validateMd,
-  pathIsAbsolute,
+  // pathIsAbsolute,
+  urlifyll
   // sumatotal,
   
 }
 
 
-// function extractLinks(newPath) {
-//   let returnUrl;
-//   returnUrl = fs.readFile(newPath, 'utf-8', (err, data) => {
-//          if (err) {
-//            reject(err);
-//          }
-//          {
-//         const toString= data.toString();
-//         const mdLinkRgEx = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
-//         const mdLinkRgEx2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
-  
-//         const allLinks = toString.match(mdLinkRgEx);
-//         const urlArray = toString.match(mdLinkRgEx2);
-  
-//         for (let i=0; i< urlArray.length; i++) {
-//           fetch(urlArray[i])
-//           .then(response => {
-//             if (response.status == 200) {
-//               console.log(`Text: ${allLinks[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
-//             } else if (response.status == 404||response.status == 400) {
-//               console.log(`ERROR.\nText: ${allLink[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
-//             }
-//           })
-//         }
-//       }
-//    })
-//      return returnUrl;
-// };
