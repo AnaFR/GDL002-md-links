@@ -86,12 +86,16 @@ const getLinks = (filePath, data) => {
     
   }
   return myReturnData;
+  
 };
 
 var myProcData; 
 
+
 //function to read file .md and print the links and fetch response status
 function readCompletePath (filePath) {
+  let badLinks=0;
+  let goodLinks=0;
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, function (err, data) {
       if (err) {
@@ -104,14 +108,18 @@ function readCompletePath (filePath) {
       fetch(myProcData[0].link)
   .then(response => {
     if (response.status == 200) {
+      goodLinks++;
+      console.log(`Total Functional Links: ${goodLinks}\n`);
       console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
     } else if (response.status == 404||response.status == 400) {
+      badLinks++;
       console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
-     
+      console.log(`Total Broken links: ${badLinks}\n`);
     }
 })
       
     });
+    
   });
 
 
@@ -119,27 +127,8 @@ function readCompletePath (filePath) {
 
   
 };
-console.log("a");
+
 readCompletePath(filePath);
-
-
-// const validateLinks = () => {
-//   console.log("###########" + myProcData);
-//   var myProcData = getLinks(filePath,data);
-//       console.log(myProcData);
-//     fetch(myProcData[0].link)
-//   .then(response => {
-//     if (response.status == 200) {
-//       console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
-//     } else if (response.status == 404||response.status == 400) {
-//       console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
-//     }
-// })
-// };
-
-
-
-
 
 
 
@@ -181,30 +170,30 @@ readCompletePath(filePath);
 
  
 
-function validateStats(uniqueUrl, filePath){
-  let badLinks=0;
-  let goodLinks=0;
-  console.log('VALIDATESTATS');
-  // console.log(uniqueUrl + ' valor de uniqueURL');
+// function validateStats(uniqueUrl, filePath){
+//   let badLinks=0;
+//   let goodLinks=0;
+//   console.log('VALIDATESTATS');
+//   // console.log(uniqueUrl + ' valor de uniqueURL');
   
-  for(let i=0; i<uniqueUrl.lenght; i++){
-    fetch(uniqueUrl[i])
-        .then(response => {
-          console.log(uniqueUrl.lenght + ' valor lenght');
+//   for(let i=0; i<uniqueUrl.lenght; i++){
+//     fetch(uniqueUrl[i])
+//         .then(response => {
+//           console.log(uniqueUrl.lenght + ' valor lenght');
           
-          if (response.status == 404||response.status == 400) {
-            badLinks++;
-          }else if (response.status == 200|201) {
-            goodLinks++;
-          }
-          if (goodLinks+badLinks === uniqueUrl.length) {
-            console.log(`File: ${filePath} has:`);
-            console.log(`Total Functional Links: ${goodLinks}\nTotal Broken links: ${badLinks}\n`);
-          }
-        }
-      );
-    }
-}
+//           if (response.status == 404||response.status == 400) {
+//             badLinks++;
+//           }else if (response.status == 200|201) {
+//             goodLinks++;
+//           }
+//           if (goodLinks+badLinks === uniqueUrl.length) {
+//             console.log(`File: ${filePath} has:`);
+//             console.log(`Total Functional Links: ${goodLinks}\nTotal Broken links: ${badLinks}\n`);
+//           }
+//         }
+//       );
+//     }
+// }
 
 
 
