@@ -83,13 +83,14 @@ const getLinks = (filePath, data) => {
       file: filePath,
     };
     myReturnData.push(myLinkData);
+    
   }
   return myReturnData;
 };
 
 var myProcData; 
 
-//function to read file .md and print the links
+//function to read file .md and print the links and fetch response status
 function readCompletePath (filePath) {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, function (err, data) {
@@ -100,9 +101,23 @@ function readCompletePath (filePath) {
       console.log("Found links:");
       myProcData = getLinks(filePath,data);
       console.log(myProcData);
-      // validateLinks ();
+      fetch(myProcData[0].link)
+  .then(response => {
+    if (response.status == 200) {
+      console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
+    } else if (response.status == 404||response.status == 400) {
+      console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
+     
+    }
+})
+      
     });
   });
+
+
+
+
+  
 };
 console.log("a");
 readCompletePath(filePath);
@@ -164,89 +179,32 @@ readCompletePath(filePath);
 
 
 
+ 
 
-
-
-
-
-        //       var grupoData = {
-        //         href: grpdDta[2],
-        //         text: grpdDta[1],
-        //         file: filePath
-        //       }; 
-        //       htmlLinks.push(grupoData);   
-        //     }
-        //     console.log(htmlLinks.length);
-        //     console.log(htmlLinks);
-        //     return (htmlLinks);
-           
-        //   };
-
-
-
-
-
-
-
-
-
-
-      
-      // console.log('Total de links encontrados:' + '  ' + urlArray.length);
-
-  //     for (let i = 0; i < urlArray.length; i++) {
-  //       const urlArray = data.match(rExLink2);
-  //       fetch(urlArray[i]).then(response => {
-  //         if (response.status == 200) {
-  //           console.log(`Text: ${links[i]}\n
-  //                         Link: ${urlArray[i]}\n
-  //                         File: ${filePath}\n
-  //                         Response code: ${response.status}\n
-  //                         Response: ${response.statusText}\n`);
-  //         } else if (response.status == 404 || response.status == 400) {
-  //           console.log(`ERROR.\nText: ${links[i]}\n
-  //             Link: ${urlArray[i]}\n
-  //             File: ${filePath}\n
-  //             Response code: ${response.status}\n
-  //             Response: ${response.statusText}\n`);
-  //         }
-  //       });
-  //     }
-  //   }
-  // // });
-  // readCompletePath(filePath);
-
-
-
-
-
-
-
-
-// function validateStats(uniqueUrl, filePath){
-//   let badLinks=0;
-//   let goodLinks=0;
-//   console.log('VALIDATESTATS');
-//   // console.log(uniqueUrl + ' valor de uniqueURL');
+function validateStats(uniqueUrl, filePath){
+  let badLinks=0;
+  let goodLinks=0;
+  console.log('VALIDATESTATS');
+  // console.log(uniqueUrl + ' valor de uniqueURL');
   
-//   for(let i=0; i<uniqueUrl.lenght; i++){
-//     fetch(uniqueUrl[i])
-//         .then(response => {
-//           console.log(uniqueUrl.lenght + ' valor lenght');
+  for(let i=0; i<uniqueUrl.lenght; i++){
+    fetch(uniqueUrl[i])
+        .then(response => {
+          console.log(uniqueUrl.lenght + ' valor lenght');
           
-//           if (response.status == 404||response.status == 400) {
-//             badLinks++;
-//           }else if (response.status == 200|201) {
-//             goodLinks++;
-//           }
-//           if (goodLinks+badLinks === uniqueUrl.length) {
-//             console.log(`File: ${filePath} has:`);
-//             console.log(`Total Functional Links: ${goodLinks}\nTotal Broken links: ${badLinks}\n`);
-//           }
-//         }
-//       );
-//     }
-// }
+          if (response.status == 404||response.status == 400) {
+            badLinks++;
+          }else if (response.status == 200|201) {
+            goodLinks++;
+          }
+          if (goodLinks+badLinks === uniqueUrl.length) {
+            console.log(`File: ${filePath} has:`);
+            console.log(`Total Functional Links: ${goodLinks}\nTotal Broken links: ${badLinks}\n`);
+          }
+        }
+      );
+    }
+}
 
 
 
@@ -255,10 +213,10 @@ readCompletePath(filePath);
 module.exports = {
   validateFileMd,
  pathIsAbsolute,
-  // getLinks,
+   getLinks,
   // validateStats,
   readCompletePath
-  // sumatotal,
+ 
   
 }
 
