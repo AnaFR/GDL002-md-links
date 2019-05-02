@@ -1,21 +1,19 @@
-// const mdLinks = require ('./index');
-const filePath = process.argv[2];
-const path = require ('path');
-const fs = require('fs');
-// const resultReadFile = mdLinks(filePath, null);
-//  let htmlLinks = [];
-//  let prueba = urlify(data);
-const fetch = require('node-fetch');
+const fs = require('fs');// modulo que nos permite acceder al sistema de archivos para poder leer sus contenidos y crear otros archivos o carpetas.
+const path = require ('path'); // Incluir modulo de path (ubicación exacta de un archivo.)
+const filePath = process.argv[2];//It´s like get an element by Id in JS.//process.argv es un arreglo que contiene los argumentos de linea de comando.// posición para obtener el archvivo con extensión .md
+const options = process.argv[3];// contiene argunmentos en este caso stats y validate, //contiene la funcion de readFile
+const fetch = require('node-fetch');// modulo fetch requiere instalación
 
-///function to verificated that it´s an .md file
-function validateMd(filePath) {
-  console.log(filePath)
+
+//Function to verificated that it´s an .md file
+const validateFileMd = filePath => {
+  console.log(filePath);
   if (filePath === undefined) {
-    return console.log('Enter a directory');
+    return console.log('Enter a file');
   } else {
-    const pathExtencion = path.extname(filePath);
-    console.log (pathExtencion);
-    if (pathExtencion != '.md') {
+    const fileExtencion = path.extname(filePath);
+    console.log(fileExtencion);
+    if (fileExtencion != '.md') {
       console.log('It´s not an .md file');
       return false;
     } else {
@@ -23,120 +21,243 @@ function validateMd(filePath) {
       return true;
     }
   }
-}
-
-validateMd(filePath);
-
-
-// //function to verificated that path is absolute
-// function pathIsAbsolute (filePath){
-//   if(path.isAbsolute(filePath)){
-//     console.log('path is absolute');
-//     return true;
-//   }
-//   else{
-//     console.log('path is not absolute');
-//     return false
-//   }
-// };
-
-// pathIsAbsolute (filePath);
+};
+validateFileMd(filePath);
 
 
-
-
-// result of reading file
-// resultReadFile.then(
-//    (data)=> { // On Success
-//     console.log("Found links:");
-//     urlify(filePath);
-//    },
-//    (err)=> { // On Error
-//        console.error(err);
-//    }
-  
-// );
-
-// //function that extracts the links 
-// function urlify(data) {
-//     const mdLinkRgEx = /\[(.+?)\]\((.+?\))/g;
-//     const mdLinkRgEx2 = /\[(.+?)\]\((.+?)\)/;
-//     let allLinks = data.match(mdLinkRgEx);
-//     let htmlLinks = [];
-//     for (var x in allLinks) {
-//       var grpdDta = mdLinkRgEx2.exec(allLinks[x]);
-//       var grupoData = {
-//         href: grpdDta[2],
-//         text: grpdDta[1],
-//         file: filePath
-//       }; 
-//       htmlLinks.push(grupoData);   
-//     }
-//     console.log(htmlLinks.length);
-//     console.log(htmlLinks);
-//     return (htmlLinks);
-   
-//   };
- 
-
-
-// // //function to add the links
-//   function sumatotal(prueba){
-//   const total = (prueba.length);
-//   console.log( " Total found links", total );
-//   return (total);
-// };
-
-// sumatotal();
-
-
-function urlifyll(newPath) {
-
-  console.log(newPath + " nombre archivo");
-  
-  fs.readFile(newPath,"utf-8",  (err, data) => {
-         if (err) {
+// Function to know if it is file or directory
+const directoryOrFile = filePath => {
+  return new Promise((resolve, reject) => {
+    fs.stat(filePath, (err, stats) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          resolve(false);
+        } else {
           reject(err);
-         }
-         {
-           console.log('entro');
-           
-        const toString= data.toString();
-        const mdLinkRgEx = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
-        const mdLinkRgEx2 = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
-  
-        const allLinks = toString.match(mdLinkRgEx);
-        const urlArray = toString.match(mdLinkRgEx2);
-  
-        for (let i=0; i< urlArray.length; i++) {
-          fetch(urlArray[i])
-          .then(response => {
-            if (response.status == 200) {
-              console.log(`Text: ${allLinks[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
-            } else if (response.status == 404||response.status == 400) {
-              console.log(`ERROR.\nText: ${allLink[i]}\nLink: ${urlArray[i]}\nFile: ${newPath}\nResponse code: ${response.status}\nResponse: ${response.statusText}\n`)
-            }
-          })
         }
       }
-   })
-    //  return returnUrl;
+      if (stats.isDirectory()) {
+        console.log('it is a directory');
+        return true;
+      }
+      if (stats.isFile()) {
+        console.log('it is a file');
+        resolve(stats.isFile());
+      }
+    });
+  });
 };
 
+directoryOrFile(filePath);
 
 
 
 
 
+//function to verificated that path is absolute
+const pathIsAbsolute = (filePath) => {
+  if(path.isAbsolute(filePath)){
+    console.log('path is absolute');
+    return true;
+  }
+  else{
+    console.log('path is not absolute');
+    return false
+  }
+};
+pathIsAbsolute (filePath);
+
+
+//function that extracts the links 
+const getLinks = (filePath, data) => {
+  const rExText = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
+  const rExLink = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
+  const toString = data.toString();
+  const text = toString.match(rExText); //  text
+  const links = toString.match(rExLink); // url
+  var myReturnData = [];
+  for (let i = 0; i < links.length; i++) {
+    var myLinkData = {
+      text: text [i],
+      link: links[i],
+      file: filePath,
+    };
+    myReturnData.push(myLinkData);
+  }
+  return myReturnData;
+};
+
+var myProcData; 
+
+//function to read file .md and print the links
+function readCompletePath (filePath) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, function (err, data) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(data.toString());
+      console.log("Found links:");
+      myProcData = getLinks(filePath,data);
+      console.log(myProcData);
+      // validateLinks ();
+    });
+  });
+};
+console.log("a");
+readCompletePath(filePath);
+
+
+// const validateLinks = () => {
+//   console.log("###########" + myProcData);
+//   var myProcData = getLinks(filePath,data);
+//       console.log(myProcData);
+//     fetch(myProcData[0].link)
+//   .then(response => {
+//     if (response.status == 200) {
+//       console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
+//     } else if (response.status == 404||response.status == 400) {
+//       console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
+//     }
+// })
+// };
+
+
+
+
+
+
+
+
+// function readCompletePath(filePath){
+//   fs.readFile(filePath, 'utf-8', (err,data)=>{
+//     if(err){
+//       return console.log(err);
+//     }
+//     {
+//       console.log('READCOMPLETEPATH');
+      
+//       const toString =data.toString();
+//       const regExp= /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
+//       // extrae todo lo que hace match regexp con los url
+//       let url= toString.match(regExp);
+//       let uniqueUrl;
+      
+//       console.log(`File name: ${filePath}`);
+//       console.log('Total links: '+ ' ' + url.length);
+//       uniqueUrl= url.filter((currentItem, itemIndex, currentArray) => currentArray.indexOf(currentItem)===itemIndex); // indexOf() retorna el primer índice en el que se puede encontrar un elemento dado en el array
+//       console.log('Total unique Links: ' + " " + uniqueUrl.length + '\n');
+      
+//         //console.log(needValidation + ' su valor');
+//          validateStats(uniqueUrl, filePath);
+
+//     }
+   
+//   });
+ 
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //       var grupoData = {
+        //         href: grpdDta[2],
+        //         text: grpdDta[1],
+        //         file: filePath
+        //       }; 
+        //       htmlLinks.push(grupoData);   
+        //     }
+        //     console.log(htmlLinks.length);
+        //     console.log(htmlLinks);
+        //     return (htmlLinks);
+           
+        //   };
+
+
+
+
+
+
+
+
+
+
+      
+      // console.log('Total de links encontrados:' + '  ' + urlArray.length);
+
+  //     for (let i = 0; i < urlArray.length; i++) {
+  //       const urlArray = data.match(rExLink2);
+  //       fetch(urlArray[i]).then(response => {
+  //         if (response.status == 200) {
+  //           console.log(`Text: ${links[i]}\n
+  //                         Link: ${urlArray[i]}\n
+  //                         File: ${filePath}\n
+  //                         Response code: ${response.status}\n
+  //                         Response: ${response.statusText}\n`);
+  //         } else if (response.status == 404 || response.status == 400) {
+  //           console.log(`ERROR.\nText: ${links[i]}\n
+  //             Link: ${urlArray[i]}\n
+  //             File: ${filePath}\n
+  //             Response code: ${response.status}\n
+  //             Response: ${response.statusText}\n`);
+  //         }
+  //       });
+  //     }
+  //   }
+  // // });
+  // readCompletePath(filePath);
+
+
+
+
+
+
+
+
+// function validateStats(uniqueUrl, filePath){
+//   let badLinks=0;
+//   let goodLinks=0;
+//   console.log('VALIDATESTATS');
+//   // console.log(uniqueUrl + ' valor de uniqueURL');
+  
+//   for(let i=0; i<uniqueUrl.lenght; i++){
+//     fetch(uniqueUrl[i])
+//         .then(response => {
+//           console.log(uniqueUrl.lenght + ' valor lenght');
+          
+//           if (response.status == 404||response.status == 400) {
+//             badLinks++;
+//           }else if (response.status == 200|201) {
+//             goodLinks++;
+//           }
+//           if (goodLinks+badLinks === uniqueUrl.length) {
+//             console.log(`File: ${filePath} has:`);
+//             console.log(`Total Functional Links: ${goodLinks}\nTotal Broken links: ${badLinks}\n`);
+//           }
+//         }
+//       );
+//     }
+// }
 
 
 
 
 
 module.exports = {
-  validateMd,
-  // pathIsAbsolute,
-  urlifyll
+  validateFileMd,
+ pathIsAbsolute,
+  // getLinks,
+  // validateStats,
+  readCompletePath
   // sumatotal,
   
 }
