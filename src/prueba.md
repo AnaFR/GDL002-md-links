@@ -17,7 +17,7 @@
  ![Markdown](https://es.wikipedia.org/wiki/Markdown) 
 
 
-![nosirve]https://www.gmfsecure.com/mi-cuenta/#inicio)
+
 
 
  ![Markdown](https://es.wikipeia.org/wiki/Markdown) 
