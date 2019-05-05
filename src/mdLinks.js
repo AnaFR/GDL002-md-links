@@ -5,6 +5,7 @@ const options = process.argv[3];// contiene argunmentos en este caso stats y val
 const fetch = require('node-fetch');// modulo fetch requiere instalación
 var myProcData; 
 
+
 //Function to verificated that it´s an .md file
 const validateFileMd = filePath => {
   console.log(filePath);
@@ -90,113 +91,94 @@ pathIsAbsolute (filePath);
 };
 
 
+// function to read file .md 
+// function readCompletePath(filePath) {
+//   return new Promise((resolve, reject) => {
+//     fs.readFile(filePath, function(err, data) {
+//       if (err) {
+//         return reject(err);
+//       }
+//       resolve(data.toString());
+//       console.log('Found links:');
+//       myProcData = getLinks(filePath, data);
+//       console.log(myProcData);
+//     });
+//   });
+// }
+// readCompletePath(filePath);
+  
 
 
-
-
-
-
-
-//function to read file .md and print the links and fetch response status
-function readCompletePath (filePath) {
-return new Promise((resolve, reject) => {
-    fs.readFile(filePath, function (err, data) {
+//function  fetch response status
+function readPathStatus(filePath) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, function(err, data) {
       if (err) {
         return reject(err);
       }
       resolve(data.toString());
-      console.log("Found links:");
-      myProcData = getLinks(filePath,data);
-      console.log(myProcData);
-      for (let i= 0; i < myProcData.length; i++) {
-      fetch(myProcData[i].link)
-  .then(response => {
-    if (response.status == 200) {
-      console.log(`File: ${filePath}\n Text:${myProcData[i].text}\n Link: ${myProcData[0].link}\n  Response code: ${response.status}\nResponse: ${response.statusText}\n`)
-    } else if (response.status == 404||response.status == 400) {
-    
-      console.log(`File: ${filePath}\n Text:${myProcData[i].text}\n Link: ${myProcData[0].link}\n Response code: ${response.status}\nResponse: ${response.statusText}\n`)
-      
-    }
-})}
-      
+      console.log('Found links:');
+      myProcData = getLinks(filePath, data);
+      // console.log(myProcData);
+      for (let i = 0; i < myProcData.length; i++) {
+        fetch(myProcData[i].link).then(response => {
+          if (response.status == 200) {
+            console.log(
+              `File: ${filePath}\n Text:${myProcData[i].text}\n Link: ${
+                myProcData[0].link
+              }\n  Response code: ${response.status}\nResponse: ${response.statusText}\n`,
+            );
+          } else if (response.status == 404 || response.status == 400) {
+            console.log(
+              `File: ${filePath}\n Text:${myProcData[i].text}\n Link: ${
+                myProcData[0].link
+              }\n Response code: ${response.status}\nResponse: ${response.statusText}\n`,
+            );
+          }
+        });
+      }
     });
-    
   });
+}
+readPathStatus(filePath);
 
 
-
-
-  
-};
-
-readCompletePath(filePath);
-
-
-
-
-// function readCompletePath(filePath){
-//   fs.readFile(filePath, 'utf-8', (err,data)=>{
-//     if(err){
-//       return console.log(err);
-//     }
-//     {
-//       console.log('READCOMPLETEPATH');
+//function  fetch response status
+function funtionStats(filePath) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, function(err, data) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(data.toString());
+      console.log(`File: ${filePath} has:`);
+      myProcData = getLinks(filePath, data);
       
-//       const toString =data.toString();
-//       const regExp= /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
-//       // extrae todo lo que hace match regexp con los url
-//       let url= toString.match(regExp);
-//       let uniqueUrl;
-      
-//       console.log(`File name: ${filePath}`);
-//       console.log('Total links: '+ ' ' + url.length);
-//       uniqueUrl= url.filter((currentItem, itemIndex, currentArray) => currentArray.indexOf(currentItem)===itemIndex); // indexOf() retorna el primer índice en el que se puede encontrar un elemento dado en el array
-//       console.log('Total unique Links: ' + " " + uniqueUrl.length + '\n');
-      
-//         //console.log(needValidation + ' su valor');
-//          validateStats(uniqueUrl, filePath);
-
-//     }
-   
-//   });
- 
-// }
-
-
-
-
-
-
-
-
- 
-
-// function validateStats(uniqueUrl, filePath){
-//   let badLinks=0;
-//   let goodLinks=0;
-//   console.log('VALIDATESTATS');
-//   // console.log(uniqueUrl + ' valor de uniqueURL');
-  
-//   for(let i=0; i<uniqueUrl.lenght; i++){
-//     fetch(uniqueUrl[i])
-//         .then(response => {
-//           console.log(uniqueUrl.lenght + ' valor lenght');
+      let wrongLinks = 0;
+      let rightLinks = 0;
+      for (let i = 0; i < myProcData.length; i++) {
+        fetch(myProcData[i].link).then(response => {
+          if (response.status == 200) {
+            rightLinks++;
+          } else if (response.status == 404 || response.status == 400) {
+            wrongLinks++;
           
-//           if (response.status == 404||response.status == 400) {
-//             badLinks++;
-//           }else if (response.status == 200|201) {
-//             goodLinks++;
-//           }
-//           if (goodLinks+badLinks === uniqueUrl.length) {
-//             console.log(`File: ${filePath} has:`);
-//             console.log(`Total Functional Links: ${goodLinks}\nTotal Broken links: ${badLinks}\n`);
-//           }
-//         }
-//       );
-//     }
-// }
-
+          } else {
+            console.log('error', response.status);
+  }
+  if (wrongLinks + rightLinks === myProcData.length) {
+    console.log(`File: ${filePath} has:`);
+    console.log(`✔ Total Links: ${myProcData.length}`);
+    console.log(`✔ Total Unique Links: ${rightLinks}`);
+    console.log(`✖ Total Broken links: ${wrongLinks}\n`);
+}
+        });   
+        }
+     
+    });
+  });
+}
+funtionStats(filePath);
 
 
 
@@ -206,7 +188,7 @@ module.exports = {
  pathIsAbsolute,
    getLinks,
   // validateStats,
-  readCompletePath
+  // readCompletePath
  
   
 }
