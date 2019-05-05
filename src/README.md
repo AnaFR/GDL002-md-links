@@ -3,7 +3,19 @@
 
 ## Diagrama de flujo del modulo
 
+ ![Diagrama de flujo](https://github.com/AnaFR/GDL002-md-links/blob/master/img/flujograma.png)}
+
+
+ ![Markdown](https://es.wikipedia.org/wiki/Markdown) 
 ![Diagrama de flujo](https://github.com/AnaFR/GDL002-md-links/blob/master/img/flujograma.png)
+
+
+ ![Markdown](https://es.wikipedia.org/wiki/Markdown) 
+
+
+
+
+
 
 ## ¿QUÉ ES?
 Es un modulo con las siguientes funcionalidades:
@@ -31,7 +43,7 @@ Formas de instalación:
 
 # Local
 
-npm install --save 
+npm install AnaFR/GDL002-md-links
 
 # Global
 

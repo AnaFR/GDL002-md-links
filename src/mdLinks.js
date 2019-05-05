@@ -3,7 +3,7 @@ const path = require ('path'); // Incluir modulo de path (ubicación exacta de u
 const filePath = process.argv[2];//It´s like get an element by Id in JS.//process.argv es un arreglo que contiene los argumentos de linea de comando.// posición para obtener el archvivo con extensión .md
 const options = process.argv[3];// contiene argunmentos en este caso stats y validate, //contiene la funcion de readFile
 const fetch = require('node-fetch');// modulo fetch requiere instalación
-
+var myProcData; 
 
 //Function to verificated that it´s an .md file
 const validateFileMd = filePath => {
@@ -58,7 +58,7 @@ directoryOrFile(filePath);
 const pathIsAbsolute = (filePath) => {
   if(path.isAbsolute(filePath)){
     console.log('path is absolute');
-    return true;
+    return true;s
   }
   else{
     console.log('path is not absolute');
@@ -69,7 +69,7 @@ pathIsAbsolute (filePath);
 
 
 //function that extracts the links 
-const getLinks = (filePath, data) => {
+  const getLinks = (filePath, data) => {
   const rExText = /(?:[^[])([^[]*)(?=(\]+\(((https?:\/\/)|(http?:\/\/)|(www\.))))/g;
   const rExLink = /(((https?:\/\/)|(http?:\/\/)|(www\.))[^\s\n)]+)(?=\))/g;
   const toString = data.toString();
@@ -83,20 +83,23 @@ const getLinks = (filePath, data) => {
       file: filePath,
     };
     myReturnData.push(myLinkData);
-    
+  
   }
   return myReturnData;
   
 };
 
-var myProcData; 
+
+
+
+
+
+
 
 
 //function to read file .md and print the links and fetch response status
 function readCompletePath (filePath) {
-  let badLinks=0;
-  let goodLinks=0;
-  return new Promise((resolve, reject) => {
+return new Promise((resolve, reject) => {
     fs.readFile(filePath, function (err, data) {
       if (err) {
         return reject(err);
@@ -105,18 +108,17 @@ function readCompletePath (filePath) {
       console.log("Found links:");
       myProcData = getLinks(filePath,data);
       console.log(myProcData);
-      fetch(myProcData[0].link)
+      for (let i= 0; i < myProcData.length; i++) {
+      fetch(myProcData[i].link)
   .then(response => {
     if (response.status == 200) {
-      goodLinks++;
-      console.log(`Total Functional Links: ${goodLinks}\n`);
-      console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
+      console.log(`File: ${filePath}\n Text:${myProcData[i].text}\n Link: ${myProcData[0].link}\n  Response code: ${response.status}\nResponse: ${response.statusText}\n`)
     } else if (response.status == 404||response.status == 400) {
-      badLinks++;
-      console.log(`Response code: ${response.status}\nResponse: ${response.statusText}\n`)
-      console.log(`Total Broken links: ${badLinks}\n`);
+    
+      console.log(`File: ${filePath}\n Text:${myProcData[i].text}\n Link: ${myProcData[0].link}\n Response code: ${response.status}\nResponse: ${response.statusText}\n`)
+      
     }
-})
+})}
       
     });
     
