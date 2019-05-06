@@ -1,69 +1,69 @@
-const mdLinks = require('../index');
+const mdLnksUtls = require('../src/mdLinks.js');
 
-
-
-describe('mdLinks', () => {
-
-  it('should...', () => {
-    console.log('FIX ME!');
-  });
-
-});
-
-
-
-const {validatePath, absolutePath, readingFile} = require('../src/mdLinks.js/index.js.js.js.js');
-
-test('should be a markdown file', () =>{
-  expect(validatePath("README.md")).toBe(true);
-});
-
-test('should be an absolute route', ()=>{
-  expect(absolutePath("README.md")).toBe("C:\Users\ana_1\LABORATORIA\GDL002-md-links\README.md");
-});
-
-
-
-
-
-
-test('should read the file', ()=>{
-  readingFile("./test/prueba.md").then((result) =>{
-    expect(result).tobe('hola');
-  })
-});
-
-
-
-
-
-
-
-
-
-
-const { validateMd, absolutesPath, readCompletePath } = require('../src/mdLinks.js');
-
-test('Should return false, the user dont have path', () => {
-  expect(validateMd()).toBe();
-});
-
-test('Should by a file markdown', () => {
-  expect(validateMd('README.md')).toBe(true);
-});
-
-test('Should by a file markdown', () => {
-  expect(validateMd('index.js')).toBe(false);
-});
-
-test('Obtein an absoulte path', () => {
-  expect(absolutesPath('README.md')).toBe(
-    'C:\Users\ana_1\LABORATORIA\GDL002-md-links\README.md',
-  );
-});
-
-test('Should read the complete path', () => {
-  readCompletePath('./test/prueba.md').then(result => {
-    expect(result).toBe('HOLA');
+//  read de path
+describe('validateFileMd', () => {
+  it('should be validateFileMd a function', () => {
+    expect(typeof mdLnksUtls.validateFileMd).toEqual('function');
   });
 });
+
+// directory or file
+describe('directoryOrFile', () => {
+  it('should be directoryOrFile a function', () => {
+    expect(typeof mdLnksUtls.directoryOrFile).toEqual('function');
+  });
+});
+
+test('Show name of file', () => {
+  mdLnksUtls.directoryOrFile('prueba.md').then(result => {
+    expect(result).toBe(Promise);
+  });
+});
+
+test('Show name of a directory', () => {
+  mdLnksUtls.directoryOrFile('prueba.md').then(result => {
+    expect(result).toBe(Promise);
+  });
+});
+
+// get links
+describe('getLinks', () => {
+  it('should be getLinks a function', () => {
+    expect(typeof mdLnksUtls.getLinks).toEqual('function');
+  });
+});
+// read complete path
+describe(' readCompletePath', () => {
+  it('should be  readCompletePath a function', () => {
+    expect(typeof mdLnksUtls.readCompletePath).toEqual('function');
+  });
+});
+// path Status
+describe('readPathStatus', () => {
+  it('should be readPathStatus a function', () => {
+    expect(typeof mdLnksUtls.readPathStatus).toEqual('function');
+  });
+});
+// stats
+describe('functionStats', () => {
+  it('should be functionStats a function', () => {
+    expect(typeof mdLnksUtls.functionStats).toEqual('function');
+  });
+});
+// validate and stats
+describe('validateAndStats', () => {
+  it('should be validateAndStats a function', () => {
+    expect(typeof mdLnksUtls.validateAndStats).toEqual('function');
+  });
+});
+// menu
+describe('menuOptions', () => {
+  it('should be menuOptions a function', () => {
+    expect(typeof mdLnksUtls.menuOptions).toEqual('function');
+  });
+});
+
+
+
+
+

@@ -6,13 +6,12 @@ const fetch = require('node-fetch'); // modulo fetch requiere instalación
 var myProcData;
 
 //Function to verificated that it´s an .md file
-const validateFileMd = filePath => {
-  console.log(filePath);
+const validateFileMd = (filePath) => {
   if (filePath === undefined) {
     return console.log('Enter a file');
   } else {
     const fileExtencion = path.extname(filePath);
-    console.log(fileExtencion);
+
     if (fileExtencion != '.md') {
       console.log('It´s not an .md file');
       return false;
@@ -25,7 +24,7 @@ const validateFileMd = filePath => {
 validateFileMd(filePath);
 
 // Function to know if it is file or directory
-const directoryOrFile = filePath => {
+const directoryOrFile = (filePath) => {
   return new Promise((resolve, reject) => {
     fs.stat(filePath, (err, stats) => {
       if (err) {
@@ -49,18 +48,19 @@ const directoryOrFile = filePath => {
 
 directoryOrFile(filePath);
 
-//function to verificated that path is absolute
-const pathIsAbsolute = filePath => {
-  if (path.isAbsolute(filePath)) {
-    console.log('path is absolute');
-    return true;
-    s;
-  } else {
-    console.log('path is not absolute');
-    return false;
-  }
-};
-pathIsAbsolute(filePath);
+// console.log(path.isAbsolute(filePath));
+
+// function to verificated that path is absolute
+// const pathIsAbsolute = (filePath) => {
+//   if (path.isAbsolute(filePath)) {
+//     console.log('path is absolute');
+//     return true;
+//   } else {
+//     console.log('path is not absolute');
+//     return false;
+//   }
+// };
+// pathIsAbsolute(filePath);
 
 //function that extracts the links
 const getLinks = (filePath, data) => {
@@ -82,7 +82,7 @@ const getLinks = (filePath, data) => {
 };
 
 // function to read file .md
-function readCompletePath(filePath) {
+const readCompletePath = (filePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, function(err, data) {
       if (err) {
@@ -91,14 +91,14 @@ function readCompletePath(filePath) {
       resolve(data.toString());
       console.log('Found links:');
       myProcData = getLinks(filePath, data);
-      // console.log(myProcData);
+      console.log(myProcData);
     });
   });
 }
 readCompletePath(filePath);
 
 // //function  fetch response status
-function readPathStatus(filePath) {
+const readPathStatus = (filePath)  => {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, function(err, data) {
       if (err) {
@@ -130,14 +130,14 @@ function readPathStatus(filePath) {
 }
 
 // //function  fetch response status
-function funtionStats(filePath) {
+const functionStats = (filePath)  =>{
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, function(err, data) {
       if (err) {
         return reject(err);
       }
       resolve(data.toString());
-      console.log(`File: ${filePath} has:`);
+
       myProcData = getLinks(filePath, data);
 
       let wrongLinks = 0;
@@ -163,7 +163,7 @@ function funtionStats(filePath) {
   });
 }
 
-function validateAndStats(filePath) {
+const validateAndStats = (filePath)  =>{
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, function(err, data) {
       if (err) {
@@ -207,24 +207,25 @@ function validateAndStats(filePath) {
 }
 
 //options
-function menuOptions() {
+const menuOptions = () => {
   if (options === '--validate') {
     console.log(readPathStatus(filePath));
   } else if (options === '--stats') {
-    //  stats.statsLinks(urlArray);
-    console.log(funtionStats(filePath));
+    console.log(functionStats(filePath));
   } else if (options === '--validate--stats') {
-    //  stats.validateStats(urlArray);
     console.log(validateAndStats(filePath));
   }
-}
-
+};
 menuOptions();
 
 module.exports = {
+  readPathStatus,
+  menuOptions,
   validateFileMd,
-  pathIsAbsolute,
+  // pathIsAbsolute,
   getLinks,
-  // validateStats,
-  // readCompletePath
+  validateAndStats,
+  functionStats,
+  readCompletePath,
+  directoryOrFile,
 };

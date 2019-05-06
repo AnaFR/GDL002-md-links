@@ -1,7 +1,7 @@
 {
-  "name": "md-links",
-  "version": "0.1.0",
-  "main": "index.js",
+  "name": "anaFrs-md-links",
+  "version": "0.1.1",
+  "main": "mdLinks.js",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -12,7 +12,11 @@
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "acorn": "^6.1.1",
+    "mock-require": "^3.0.3",
+    "node-fetch": "^2.4.1"
+  },
   "scripts": {
     "test": "jest"
   },
